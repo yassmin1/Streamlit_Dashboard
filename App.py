@@ -4,7 +4,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import numpy as np
 from datetime import datetime
-from etl.etl_cbmc1 import  ETLPaths, run_etl
+#from etl.etl_cbmc1 import  ETLPaths, run_etl
 
 ##############################################
 COLUMNS=[
@@ -123,7 +123,7 @@ def load_and_process_data(file_par,columns=COLUMNS):
     """
     try:
 
-        sample_data=(pd.read_parquet(file_par)[columns]).dropna(subset=["Academic Period"])
+        sample_data=(pd.read_parquet(file_par)[columns])
 
 
 
