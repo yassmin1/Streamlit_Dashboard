@@ -3,7 +3,7 @@
 
 This template helps you **prototype features first** and then reuse them in a Streamlit dashboard.
 
-## How to run (Windows / macOS / Linux)
+## How to run 
 
 ### 1) Create & activate a virtual environment
 
@@ -11,5 +11,10 @@ This template helps you **prototype features first** and then reuse them in a St
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
-# If activation is blocked, run once as admin:
-#   Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+``` 
+**Windows Command Prompt**
+#If activation is blocked, run once as admin:
+```cmd
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
