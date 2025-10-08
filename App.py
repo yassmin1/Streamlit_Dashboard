@@ -7,15 +7,16 @@ from datetime import datetime
 from etl.etl_cbmc1 import  ETLPaths, run_etl
 
 ##############################################
-COLUMNS=["Academic Period",
-"SPC College",
+COLUMNS=[
+"Academic Period",
+"Calendar Year",
 "Gender",
 "Student Type",
 "Full_Part Time",
 "Ethnicity",
 "Major",
 "Age_Group",
-    
+
 ]
 
 
@@ -23,7 +24,7 @@ def create_bar_chart(data, x_col, y_col, title="Bar Chart", color_col=None,
                      orientation='vertical', color_scheme='viridis'):
     """
     Create a customizable bar chart for Streamlit dashboard
-    
+
     Parameters:
     - data: DataFrame with the data
     - x_col: Column name for x-axis
@@ -33,7 +34,7 @@ def create_bar_chart(data, x_col, y_col, title="Bar Chart", color_col=None,
     - orientation: 'vertical' or 'horizontal'
     - color_scheme: Color palette ('viridis', 'blues', 'reds', etc.)
     """
-    
+
     if orientation == 'horizontal':
         fig = px.bar(data, x=y_col, y=x_col, 
                      color=color_col if color_col else None,
@@ -45,7 +46,7 @@ def create_bar_chart(data, x_col, y_col, title="Bar Chart", color_col=None,
                      color=color_col if color_col else None,
                      title=title,
                      color_discrete_sequence=px.colors.qualitative.Set3)
-    
+
     # Customize the layout
     fig.update_layout(
         title_font_size=20,
@@ -57,44 +58,44 @@ def create_bar_chart(data, x_col, y_col, title="Bar Chart", color_col=None,
         paper_bgcolor='rgba(0,0,0,0)',
         height=500
     )
-    
+
     # Add hover information
     fig.update_traces(
         hovertemplate='<b>%{x}</b><br>Value: %{y}<extra></extra>'
     )
-    
+
     return fig
 ###
 def create_stacked_bar_chart(data, x_col, y_cols, title="Stacked Bar Chart"):
     """Create a stacked bar chart with multiple y-columns"""
     fig = go.Figure()
-    
+
     for col in y_cols:
         fig.add_trace(go.Bar(
             name=col,
             x=data[x_col],
             y=data[col]
         ))
-    
+
     fig.update_layout(
         title=title,
         barmode='stack',
         height=500
     )
-    
+
     return fig
 
 def create_grouped_bar_chart(data, x_col, y_cols, title="Grouped Bar Chart"):
     """Create a grouped bar chart with multiple y-columns"""
     fig = go.Figure()
-    
+
     for col in y_cols:
         fig.add_trace(go.Bar(
             name=col,
             x=data[x_col],
             y=data[col]
         ))
-    
+
     fig.update_layout(
         title=title,
         barmode='group',
@@ -113,10 +114,10 @@ def create_grouped_bar_chart(data, x_col, y_cols, title="Grouped Bar Chart"):
 def load_and_process_data(file_par,columns=COLUMNS):
     """
     Load and process CBM data with caching for performance
-    
+
     The @st.cache_data decorator ensures this function only runs once per session.
     Subsequent calls will return the cached result, dramatically improving performance.
-    
+
     Returns:
         pd.DataFrame: Processed CBM data or None if loading fails
     """
@@ -124,8 +125,8 @@ def load_and_process_data(file_par,columns=COLUMNS):
 
         sample_data=(pd.read_parquet(file_par)[columns]).dropna(subset=["Academic Period"])
 
-        
-        
+
+
         return sample_data
     except Exception as e:
         # Display error message to user if data loading fails
@@ -137,15 +138,15 @@ def load_and_process_data(file_par,columns=COLUMNS):
 def get_value_counts(data, column):
     """
     Get value counts for a specific column with caching
-    
+
     This function calculates how many times each unique value appears in a column.
     Caching prevents recalculation when the user switches between different view options
     (like percentages vs counts) for the same column.
-    
+
     Args:
         data (pd.DataFrame): The dataset to analyze
         column (str): Name of the column to count values for
-    
+
     Returns:
         pd.Series: Value counts for the specified column
     """
@@ -156,22 +157,22 @@ def get_value_counts(data, column):
 def get_cross_tabulation(data, col1, col2):
     """
     Get cross-tabulation between two columns with caching
-    
+
     Cross-tabulation shows the relationship between two categorical variables
     by counting occurrences of each combination. Caching this expensive operation
     prevents recalculation when users switch between visualization options.
-    
+
     Args:
         data (pd.DataFrame): The dataset to analyze
         col1 (str): First categorical column
         col2 (str): Second categorical column
-    
+
     Returns:
         pd.DataFrame: Cross-tabulation table showing relationships between categories
     """
     ct = pd.crosstab(data[col1], data[col2])
     ct = ct[ct.sum(axis=0).sort_values(ascending=False).index]
-    
+
     return ct
 
 
@@ -243,48 +244,53 @@ def sidebar_major_selector(df: pd.DataFrame,
 def main():
     """
     Main function that creates the Streamlit dashboard for SPC data analysis.
-    
+
     This function sets up the entire user interface, loads data, creates visualizations,
     and handles user interactions. It's optimized for performance with large datasets
     through caching, sampling, and smart data limiting.
     """
-    
+
     # Configure the Streamlit page with title and wide layout for better space utilization
-    st.set_page_config(page_title="SSPC Student Insights Dashboard", layout="wide")
+    st.set_page_config(page_title="Student Insights", layout="wide")
     col1, col2 = st.columns([1, 4])  
     with col1:
-        st.image("assets/logo-spc.png", width=300)
-    with col2:
-    
+        # Display the SPC logo from local assets
+        st.image("assets/analysis.png", width=200)
+
+    with col2:     
         # Create the main title and separator line
-        st.title("SPC Student Insights Dashboard")
-        st.caption("""
-        An interactive dashboard designed to explore student enrollment, demographics, and program trends 
-        across St. Philip’s College.  
-        Use the sidebar filters to select academic terms, majors, and student characteristics to uncover 
-        patterns that support data-informed decisions.
-        """)
+        st.title("Student Insights", anchor=None)
+        st.markdown(
+            """
+            <div style='color:#555;font-size:20px; line-height:1.4;margin-top:-10px'>
+              <strong>An interactive dashboard designed to explore student enrollment, demographics, and program trends. </strong>
+              <br>
+              <strong> Use the sidebar filters to select academic terms, majors, and student characteristics to uncover patterns that support data-informed decisions. </strong>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
     st.markdown("---")  # Creates a horizontal line for visual separation
-    
+
     # =============================================================================
     # DATA LOADING SECTION
     # =============================================================================
-    
+
     # Load data with caching - this spinner shows while data is loading
     # The spinner improves user experience by indicating that something is happening
     with st.spinner("Loading data..."):
-        sample_data = load_and_process_data("data/curated/cbmc1_merged.parquet")
-    
+        sample_data = load_and_process_data("data/curated/data_merged.parquet")
+
     # Check if data loading was successful
     if sample_data is None or sample_data.empty:
         # Display error message and stop execution if no data available
         st.error("Failed to load data. Please check the file path and try again.")
         return
-    
+
     # =============================================================================
     # SESSION STATE OPTIMIZATION
     # =============================================================================
-    
+
     # Store frequently used data information in session state to avoid repeated calculations
     # Session state persists across user interactions, improving performance
     if 'data_info' not in st.session_state:
@@ -294,17 +300,17 @@ def main():
             # Only categorical columns (object/category types) are suitable for counting analysis
             'categorical_columns': sample_data.select_dtypes(include=['object', 'category']).columns.tolist()
         }
-    
+
     # Use cached categorical columns list for better performance
     categorical_columns = st.session_state.data_info['categorical_columns']
-    
+
     # =============================================================================
     # SIDEBAR CONTROLS SECTION
     # =============================================================================
-    
+
     # Create sidebar for user controls - keeps main area clean for visualizations
     st.sidebar.header("Analysis Controls")
-    
+
     # Dropdown to select which categorical column to analyze
     # Index=0 means the first column is selected by default
     selected_column = st.sidebar.selectbox(
@@ -312,13 +318,13 @@ def main():
         categorical_columns,
         index=0
     )
-    
+
     # Radio buttons for chart orientation - affects how bars are displayed
     orientation = st.sidebar.radio(
         "Chart Orientation",
         ["vertical", "horizontal"]  # vertical = bars go up, horizontal = bars go sideways
     )
-    
+
     #checkbox to taggle between Terms
     show_terms = st.sidebar.multiselect(
         "Select Terms to Include",
@@ -327,10 +333,10 @@ def main():
     )
     #checkbox to taggle between Majors
     show_majors = sidebar_major_selector(sample_data, major_col="Major")
-    
+
     # Checkbox to toggle between showing counts vs percentages
     show_percentages = st.sidebar.checkbox("Show Percentages", value=False)
-    
+
     #----------------------------
     #fiter based on select terms 
     #--------------------------------
@@ -340,19 +346,19 @@ def main():
         st.warning("Please select at least one term to display data.")
         return
     #-----------------------
-    
+
     # =============================================================================
     # PERFORMANCE OPTIMIZATION FOR LARGE DATASETS
     # =============================================================================
-    
+
     # If dataset is very large (>10,000 records), offer sampling option for better performance
     if len(sample_data) > 10000:
         # Inform user about large dataset and optimization options
         st.sidebar.info(f"Dataset has {len(sample_data):,} records. Using optimized processing.")
-        
+
         # Checkbox to enable/disable sampling
         use_sampling = st.sidebar.checkbox("Use sampling for faster processing", value=True)
-        
+
         if use_sampling:
             # Use maximum of 5,000 records or the full dataset size, whichever is smaller
             sample_size = min(5000, len(sample_data))
@@ -365,34 +371,34 @@ def main():
     else:
         # For smaller datasets, use all data
         display_data = sample_data
-        
-        
-    
+
+
+
     # =============================================================================
     # MAIN DASHBOARD LAYOUT
     # =============================================================================
-    
+
     # Create two columns: left for chart (2/3 width), right for statistics (1/3 width)
     col1, col2 = st.columns([2, 1])
-    
+
     # =============================================================================
     # LEFT COLUMN: MAIN VISUALIZATION
     # =============================================================================
-    
+
     with col1:
         # Get cached value counts for the selected column
         # This prevents recalculation when user changes visualization options
         value_counts = get_value_counts(display_data, selected_column)
-        
+
         # Limit categories for performance - showing too many bars makes charts unreadable
         if len(value_counts) > 20:
             st.info(f"Showing top 20 categories out of {len(value_counts)} total")
             value_counts = value_counts.head(20)  # Keep only top 20 most frequent categories
-        
+
         # Convert value counts to DataFrame format required by Plotly
         count_data = value_counts.reset_index()
         count_data.columns = [selected_column, 'Count']  # Rename columns for clarity
-        
+
         # Calculate percentages if user requested them
         if show_percentages:
             # Calculate percentage of each category relative to total
@@ -409,7 +415,7 @@ def main():
             # Simpler hover template for count-only display
             hover_template = '<b>%{x}</b><br>Count: %{y}<extra></extra>'
             customdata = None
-        
+
         # Create bar chart using Plotly Express (faster than Graph Objects)
         if orientation == 'horizontal':
             # Horizontal bar chart: x-axis = values, y-axis = categories
@@ -432,7 +438,7 @@ def main():
                 color=y_col,  # Color bars by their height
                 color_continuous_scale='viridis'
             )
-        
+
         # Customize chart appearance for better performance and aesthetics
         fig.update_layout(
             title_font_size=16,  # Readable title size
@@ -441,7 +447,7 @@ def main():
             plot_bgcolor='rgba(0,0,0,0)',  # Transparent plot background
             paper_bgcolor='rgba(0,0,0,0)'  # Transparent paper background
         )
-        
+
         # Add custom hover information
         if customdata is not None:
             # When showing percentages, include both count and percentage in hover
@@ -449,7 +455,7 @@ def main():
         else:
             # When showing counts only, use simpler hover template
             fig.update_traces(hovertemplate=hover_template)
-        
+
         # Add text annotations on bars only for small datasets to avoid clutter
         if len(count_data) <= 15:
             if show_percentages:
@@ -459,29 +465,29 @@ def main():
             else:
                 # Show only counts on bars
                 text_values = count_data['Count'].astype(str)
-            
+
             # Position text outside bars for vertical, inside for horizontal orientation
             fig.update_traces(
                 text=text_values,
                 textposition='outside' if orientation == 'vertical' else 'inside'
             )
-        
+
         # Display the chart using full container width
         st.plotly_chart(fig, use_container_width=True)
-    
+
     # =============================================================================
     # RIGHT COLUMN: SUMMARY STATISTICS AND DATA TABLE
     # =============================================================================
-    
+
     with col2:
         st.subheader("Summary Statistics")
-        
+
         # Get summary statistics using cached data info for better performance
         #total_count = st.session_state.data_info['total_records']  # Total records in original dataset
 
         total_count = len(display_data) # Total records in original dataset
         unique_categories = display_data[selected_column].nunique()  # Number of unique values
-        
+
         # Handle case where value_counts might be empty (error prevention)
         if not value_counts.empty:
             most_common = value_counts.index[0]  # Most frequent category
@@ -489,53 +495,53 @@ def main():
         else:
             most_common = "N/A"
             most_common_count = 0
-        
+
         # Display key metrics using Streamlit's metric widget for nice formatting
         st.metric("Total Records", f"{total_count:,}")  # :, adds thousand separators
         st.metric("Unique Categories", f"{unique_categories}")
         st.metric("Most Common", str(most_common))  # Convert to string for display
         st.metric("Most Common Count", f"{most_common_count:,}")
-        
+
         # Show frequency table with the data
         st.subheader("Frequency Table")
         freq_table = count_data.copy()  # Copy to avoid modifying original data
-        
+
         # Round percentages if they exist
         if 'Percentage' in freq_table.columns:
             freq_table['Percentage'] = freq_table['Percentage'].round(1)
-        
+
         # Limit table size for performance - tables with many rows are slow to render
         if len(freq_table) > 10:
             freq_table_display = freq_table.head(10)  # Show only top 10 rows
             st.info(f"Showing top 10 out of {len(freq_table)} categories")
         else:
             freq_table_display = freq_table
-            
+
         def auto_height(df, row_height=35, max_height=600):
             return min(len(df) * row_height + 40, max_height)
         # Display the frequency table with fixed height for consistent layout
         st.dataframe(freq_table_display, use_container_width=True, height=auto_height(freq_table_display))
-    
+
     # =============================================================================
     # CROSS-CATEGORY ANALYSIS SECTION
     # =============================================================================
-    
+
     # Add visual separator and section header
     st.markdown("---")
     st.subheader("Cross-Category Analysis")
-    
+
     # Disable cross-analysis for very large datasets to maintain performance
     if len(display_data) > 50000:
         st.warning("Cross-category analysis disabled for large datasets to maintain performance.")
         return  # Exit function early
-    
+
     # Create two columns for category selection
     col_a, col_b = st.columns(2)
-    
+
     with col_a:
         # Dropdown for first category in comparison
         category_1 = st.selectbox("First Category", categorical_columns, index=0)
-    
+
     with col_b:
         # Dropdown for second category, defaulting to second column if available
         if len(categorical_columns) > 1:
@@ -545,39 +551,39 @@ def main():
             # Show warning if not enough categorical columns for cross-analysis
             st.warning("Need at least 2 categorical columns for cross-analysis")
             return  # Exit function early
-    
+
     # Only proceed if user selected two different categories
     if category_1 != category_2:
         # Check if cross-tabulation would be too large (performance safeguard)
         unique_cat1 = display_data[category_1].nunique()  # Number of unique values in first category
         unique_cat2 = display_data[category_2].nunique()  # Number of unique values in second category
-        
+
         # Limit cross-tabulation size to prevent performance issues
         if unique_cat1 * unique_cat2 > 500:  # 500 cells is reasonable limit
             st.warning(f"Cross-tabulation too large ({unique_cat1} x {unique_cat2}). "
                       "Please select categories with fewer unique values.")
             return  # Exit function early
-        
+
         # Create two columns for cross-analysis visualization and data
         col3, col4 = st.columns(2)
-        
+
         # =============================================================================
         # LEFT COLUMN: CROSS-TABULATION VISUALIZATION
         # =============================================================================
-        
+
         with col3:
             # Get cached cross-tabulation to avoid recalculation
             cross_tab = get_cross_tabulation(display_data, category_1, category_2)
-            
+
             # Limit categories shown in visualization for readability and performance
             if len(cross_tab.index) > 10:
                 cross_tab = cross_tab.head(10)  # Keep only top 10 rows
                 st.info("Showing top 10 categories for performance")
-            
+
             if len(cross_tab.columns) > 10:
                 cross_tab = cross_tab.iloc[:, :10]  # Keep only first 10 columns
                 st.info("Showing top 10 subcategories for performance")
-            
+
             # Create stacked bar chart using Plotly Express for better performance
             # Transpose (.T) the data for better visualization
             fig2 = px.bar(
@@ -585,7 +591,7 @@ def main():
                 title=f"{category_1} vs {category_2} Distribution",
                 height=400  # Fixed height for consistency
             )
-            
+
             # Customize chart layout
             fig2.update_layout(
                 xaxis_title=category_2,  # X-axis shows second category
@@ -593,18 +599,18 @@ def main():
                 showlegend=True,         # Show legend for first category
                 legend_title=category_1  # Legend title is first category
             )
-            
-            
+
+
             # Display the cross-tabulation chart
             st.plotly_chart(fig2, use_container_width=True)
-        
+
         # =============================================================================
         # RIGHT COLUMN: CROSS-TABULATION DATA TABLE
         # =============================================================================
-        
+
         with col4:
             st.subheader("Cross-Tabulation")
-            
+
             # Show preview for large tables to maintain performance
             if cross_tab.size > 100:  # If table has more than 100 cells
                 st.info("Showing preview of cross-tabulation")
@@ -613,7 +619,7 @@ def main():
             else:
                 # Show full table for smaller cross-tabulations
                 st.dataframe(cross_tab, use_container_width=True)
-            
+
             # Show summary statistics instead of full proportions table (better performance)
             st.subheader("Summary")
             st.write(f"**Categories in {category_1}:** {len(cross_tab.index)}")
