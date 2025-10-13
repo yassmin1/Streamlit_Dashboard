@@ -4,6 +4,8 @@ import plotly.express as px
 import plotly.graph_objects as go
 import numpy as np
 from datetime import datetime
+from pathlib import Path
+import os
 #from etl.etl_cbmc1 import  ETLPaths, run_etl
 
 ##############################################
@@ -234,6 +236,18 @@ def sidebar_major_selector(df: pd.DataFrame,
 
     return selected
 
+def safe_image(rel_path: str, width: int = 200) -> None:
+    """Try to display an image relative to this file; fallback to a friendly note."""
+    base_dir = Path(__file__).resolve().parent
+    img_path = base_dir / rel_path
+    try:
+        if img_path.exists():
+            st.image(str(img_path), width=width)
+        else:
+            st.info(f"Logo not found at {rel_path}. Add it to your repo when ready.")
+    except Exception:
+        st.info("Logo not available. Continuing without it.")
+
 
 
 
@@ -255,8 +269,7 @@ def main():
     col1, col2 = st.columns([1, 4])  
     with col1:
         # Display the SPC logo from local assets
-        st.image("assets/analysis.png", width=200)
-
+        safe_image("assets/analysis.png", width=200)
     with col2:     
         # Create the main title and separator line
         st.title("Student Insights", anchor=None)
