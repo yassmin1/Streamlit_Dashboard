@@ -326,7 +326,7 @@ def main():
     col1, col2 = st.columns([1, 4])  
     with col1:
         # Display the SPC logo from local assets
-        _safe_image("assets/analysis.PNG", width=180)
+        _safe_image("assets/analysis.png", width=180)
 
     with col2:     
         # Create the main title and separator line
