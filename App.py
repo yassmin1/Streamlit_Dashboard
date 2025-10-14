@@ -619,7 +619,7 @@ def main():
             return min(len(df) * row_height + 40, max_height)
         # Display the frequency table with fixed height for consistent layout
         #st.dataframe(freq_table_display, use_container_width=True, height=auto_height(freq_table_display))
-        st.dataframe(freq_table_display.reset_index(drop=True).T, use_container_width=True)
+        st.dataframe(freq_table_display.drop(columns=["Unnamed: 0"].T, use_container_width=True)
  
     # =============================================================================
     # CROSS-CATEGORY ANALYSIS SECTION
@@ -732,4 +732,5 @@ def main():
 if __name__ == "__main__":
     # Run the main function when script is executed directly
     main()
+
 
