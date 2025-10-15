@@ -632,8 +632,8 @@ def main():
     st.subheader("Cross-Category Analysis")
 
     # Disable cross-analysis for very large datasets to maintain performance
-    if len(display_data) > 100000:
-        st.warning("Cross-category analysis disabled for large datasets to maintain performance. Please use filters to narrow down the data size, or enable the sampling option.")
+    if len(display_data) > 110000:
+        st.warning("Cross-category analysis disabled for large datasets (>110,000 )to maintain performance. Please use filters to narrow down the data size, or enable the sampling option.")
         return  # Exit function early
 
     # Create two columns for category selection
@@ -734,6 +734,7 @@ def main():
 if __name__ == "__main__":
     # Run the main function when script is executed directly
     main()
+
 
 
 
