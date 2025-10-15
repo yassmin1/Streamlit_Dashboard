@@ -510,6 +510,7 @@ def main():
             # Use raw counts
             y_col = 'Count'
             #title = f"{selected_column} Summary"
+            title = " "
             # Simpler hover template for count-only display
             hover_template = '<b>%{x}</b><br>Count: %{y}<extra></extra>'
             customdata = None
@@ -732,6 +733,7 @@ def main():
 if __name__ == "__main__":
     # Run the main function when script is executed directly
     main()
+
 
 
 
