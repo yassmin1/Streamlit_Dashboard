@@ -105,16 +105,38 @@ def create_grouped_bar_chart(data, x_col, y_cols, title="Grouped Bar Chart"):
         height=500
     )
 
-def build_heatmap(ct: pd.DataFrame, a: str, b: str) -> px.imshow:
+def build_heatmap(ct: pd.DataFrame, index_col: str, col_col: str,text_font_size:int=12,
+                  ) -> px.imshow:
+    ct.columns = ct.columns.astype(str)
+    ct.index = ct.index.astype(str)
     fig = px.imshow(
         ct.values,
-        x=ct.columns.astype(str),
-        y=ct.index.astype(str),
+        x=ct.columns,
+        y=ct.index,
         aspect="auto",
-        title=f"{a} × {b} (Heatmap)",
-        labels=dict(x=b, y=a, color="Count")
+        title=f"{index_col} vs {col_col} (Heatmap)",
+        labels=dict(x=col_col, y=index_col, color="Count")
+    )
+    
+        
+    text = ct.round(0).astype(int).astype(str)
+    hover_fmt = "%{z:.0f}"
+    fig.update_xaxes(categoryorder="array", categoryarray=ct.columns)
+    fig.update_yaxes(categoryorder="array", categoryarray=ct.index)
+    fig.update_traces(
+        text=text.values,
+        texttemplate="%{text}",
+        textfont={"size": text_font_size},
+        hovertemplate=f"{index_col}=%{{y}}<br>{col_col}=%{{x}}<br>Value={hover_fmt}<extra></extra>",
     )
     fig.update_layout(height=450, margin=dict(l=10, r=10, t=50, b=10))
+    fig.update_layout(
+        height=450,
+        xaxis_title=col_col,  # X-axis shows second category
+        yaxis_title=index_col,     # Y-axis shows counts
+        showlegend=True,         # Show legend for first category
+        #legend_title=category_1  # Legend title is first category
+            )
     return fig
   
 def _safe_image(path: str, width: int = 200) -> None:
@@ -196,7 +218,7 @@ def get_cross_tabulation(data, col1, col2):
         pd.DataFrame: Cross-tabulation table showing relationships between categories
     """
     ct = pd.crosstab(data[col1], data[col2])
-    ct = ct[ct.sum(axis=0).sort_values(ascending=False).index]
+    #ct = ct[ct.sum(axis=0).sort_values(ascending=False).index] # sort columns based on sum
 
     return ct
 
@@ -715,6 +737,8 @@ def main():
 
             # Display the cross-tabulation chart
             st.plotly_chart(fig2, use_container_width=True)
+            st.plotly_chart(build_heatmap(cross_tab, category_1, category_2), use_container_width=True)
+
 
         # =============================================================================
         # RIGHT COLUMN: CROSS-TABULATION DATA TABLE
@@ -745,6 +769,7 @@ def main():
 if __name__ == "__main__":
     # Run the main function when script is executed directly
     main()
+
 
 
 
