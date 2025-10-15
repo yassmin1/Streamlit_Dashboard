@@ -620,7 +620,7 @@ def main():
         def auto_height(df, row_height=35, max_height=600):
             return min(len(df) * row_height + 40, max_height)
         # Display the frequency table with fixed height for consistent layout
-        freq_table_flipped = freq_table_display.set_index(freq_table_display.columns[0]).T
+        freq_table_flipped = freq_table_display.set_index(freq_table_display.columns[0]).T.style.set_properties(**{'text-align': 'center'})
         st.dataframe(freq_table_flipped, use_container_width=True, height=auto_height(freq_table_flipped))
  
     # =============================================================================
@@ -734,6 +734,7 @@ def main():
 if __name__ == "__main__":
     # Run the main function when script is executed directly
     main()
+
 
 
 
