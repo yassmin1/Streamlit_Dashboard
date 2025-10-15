@@ -105,7 +105,18 @@ def create_grouped_bar_chart(data, x_col, y_cols, title="Grouped Bar Chart"):
         height=500
     )
 
-
+def build_heatmap(ct: pd.DataFrame, a: str, b: str) -> px.imshow:
+    fig = px.imshow(
+        ct.values,
+        x=ct.columns.astype(str),
+        y=ct.index.astype(str),
+        aspect="auto",
+        title=f"{a} × {b} (Heatmap)",
+        labels=dict(x=b, y=a, color="Count")
+    )
+    fig.update_layout(height=450, margin=dict(l=10, r=10, t=50, b=10))
+    return fig
+  
 def _safe_image(path: str, width: int = 200) -> None:
     """
     Try to display an image; show a small placeholder message if the file is missing.
@@ -734,6 +745,7 @@ def main():
 if __name__ == "__main__":
     # Run the main function when script is executed directly
     main()
+
 
 
 
