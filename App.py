@@ -450,8 +450,8 @@ def main():
     # PERFORMANCE OPTIMIZATION FOR LARGE DATASETS
     # =============================================================================
 
-    # If dataset is very large (>100,000 records), offer sampling option for better performance
-    if len(sample_data) > 100000:
+    # If dataset is very large (>110,000 records), offer sampling option for better performance
+    if len(sample_data) > 110000:
         # Inform user about large dataset and optimization options
         st.sidebar.info(f"Dataset has {len(sample_data):,} records. Using optimized processing.")
 
@@ -734,6 +734,7 @@ def main():
 if __name__ == "__main__":
     # Run the main function when script is executed directly
     main()
+
 
 
 
