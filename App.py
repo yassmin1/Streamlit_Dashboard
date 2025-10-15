@@ -403,7 +403,7 @@ def main():
     """, unsafe_allow_html=True)
     # Create sidebar for user controls - keeps main area clean for visualizations
     #st.sidebar.header("Analysis Controls")
-    st.markdown("<h1 style='color:#FFB347; font-size:50px; text-align:center;margin-top:0px'>Analysis Controls</h1>", unsafe_allow_html=True)
+    st.sidebar.markdown("<h1 style='color:#FFB347; font-size:50px; text-align:center;margin-top:0px'>Analysis Controls</h1>", unsafe_allow_html=True)
 
 
     # Dropdown to select which categorical column to analyze
@@ -734,6 +734,7 @@ def main():
 if __name__ == "__main__":
     # Run the main function when script is executed directly
     main()
+
 
 
 
