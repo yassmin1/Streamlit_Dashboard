@@ -172,7 +172,7 @@ def load_and_process_data(file_par,columns=COLUMNS):
 
         sample_data=(pd.read_parquet(file_par)[columns])
         sample_data=sample_data.astype(str).apply(lambda x: x.str.strip())
-        sample_data['Calendar Year'] = "Year"+sample_data['Calendar Year']
+        #sample_data['Calendar Year'] = "Year"+sample_data['Calendar Year']
 
 
 
@@ -771,6 +771,7 @@ def main():
 if __name__ == "__main__":
     # Run the main function when script is executed directly
     main()
+
 
 
 
