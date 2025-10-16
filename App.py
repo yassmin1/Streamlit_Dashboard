@@ -12,7 +12,7 @@ import json
 ##############################################
 COLUMNS=[
 "Academic Period",
-"Calendar Year",
+# "Calendar Year",
 "Gender",
 "Student Type",
 "Full_Part Time",
@@ -369,7 +369,7 @@ def main():
         st.markdown("<h1 style='color:#34568B; font-size:70px; text-align:center;margin-top:0px'>Student Insights</h1>", unsafe_allow_html=True)
         st.markdown(
             """
-            <div style='color:#34568B;font-size:28px; text-align:center;line-height:1.4;margin-top:-5px'>
+            <div style='color:#34568B;font-size:28px; text-align:center;line-height:1.2;margin-top:-1px'>
               <strong>An interactive dashboard designed to explore student enrollment, demographics, and program trends. 
                Use the sidebar filters to select academic terms, majors, and student characteristics to uncover patterns that support data-informed decisions. </strong>
             </div>
@@ -771,6 +771,7 @@ def main():
 if __name__ == "__main__":
     # Run the main function when script is executed directly
     main()
+
 
 
 
