@@ -366,10 +366,10 @@ def main():
     with col2:     
         # Create the main title and separator line
         #st.title("Student Insights", anchor=None, help="Explore student enrollment, demographics, and program trends.",  )               )
-        st.markdown("<h1 style='color:#34568B; font-size:70px; text-align:center;margin-top:-30px'>Student Insights</h1>", unsafe_allow_html=True)
+        st.markdown("<h1 style='color:#34568B; font-size:70px; text-align:center;margin-top:-50px'>Student Insights</h1>", unsafe_allow_html=True)
         st.markdown(
             """
-            <div style='color:#34568B;font-size:28px; text-align:center;line-height:1 ;margin-top:-10px'>
+            <div style='color:#34568B;font-size:28px; text-align:center;line-height:1.2 ;margin-top:-10px'>
               <strong>An interactive dashboard designed to explore student enrollment, demographics, and program trends. 
                Use the sidebar filters to select academic terms, majors, and student characteristics to uncover patterns that support data-informed decisions. </strong>
             </div>
@@ -771,6 +771,7 @@ def main():
 if __name__ == "__main__":
     # Run the main function when script is executed directly
     main()
+
 
 
 
