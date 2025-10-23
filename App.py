@@ -522,7 +522,7 @@ def main():
     with col1:
         # Get cached value counts for the selected column
         # This prevents recalculation when user changes visualization options
-        value_counts = get_value_counts(display_data, selected_column)
+        value_counts = get_value_counts(display_data, selected_column).sort_index() ## sorting based on the index instead of counts
 
         # Limit categories for performance - showing too many bars makes charts unreadable
         if len(value_counts) > 20:
@@ -771,6 +771,7 @@ def main():
 if __name__ == "__main__":
     # Run the main function when script is executed directly
     main()
+
 
 
 
