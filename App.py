@@ -638,7 +638,7 @@ def main():
         #st.metric("Most Common Count", f"{most_common_count:,}")
 
         # Show frequency table with the data
-        st.subheader("Frequency Table")
+        st.subheader("Count-Summary Table")
         freq_table = count_data.copy()  # Copy to avoid modifying original data
 
         # Round percentages if they exist
@@ -771,6 +771,7 @@ def main():
 if __name__ == "__main__":
     # Run the main function when script is executed directly
     main()
+
 
 
 
