@@ -634,8 +634,8 @@ def main():
         # Display key metrics using Streamlit's metric widget for nice formatting
         st.metric("Total Records", f"{total_count:,}")  # :, adds thousand separators
         st.metric("Unique Categories", f"{unique_categories}")
-        st.metric("Most Common", str(most_common))  # Convert to string for display
-        st.metric("Most Common Count", f"{most_common_count:,}")
+        #st.metric("Most Common", str(most_common))  # Convert to string for display
+        #st.metric("Most Common Count", f"{most_common_count:,}")
 
         # Show frequency table with the data
         st.subheader("Frequency Table")
@@ -771,6 +771,7 @@ def main():
 if __name__ == "__main__":
     # Run the main function when script is executed directly
     main()
+
 
 
 
