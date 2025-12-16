@@ -1,28 +1,16 @@
-# Core app
 streamlit==1.32.2
-
-# Data handling
 pandas==2.1.4
-numpy==1.26.4
-
-# Visualization
 plotly==5.20.0
-
-# File formats
+numpy==1.26.4
 pyarrow==15.0.2
-fastparquet==2024.2.0
 openpyxl==3.1.2
 xlrd==2.0.1
-
-# Database
 duckdb==0.10.1
-
-# Dates & timezones
 python-dateutil==2.9.0.post0
 pytz==2024.1
-
-# Math / stats
 scipy==1.11.4
-
-# HTTP
 requests==2.31.0
+
+# fastparquet often breaks on Windows servers due to build tools.
+# Keep it for non-Windows only:
+fastparquet==2024.2.0; platform_system != "Windows"
