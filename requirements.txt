@@ -1,20 +1,18 @@
+# Python Version: 3.12.3
+# This requirements file is optimized for Python 3.12.3
+
 # Core Streamlit Application
-streamlit==1.31.0
+streamlit==1.39.0
 
 # Data Processing
-pandas==2.1.4
-numpy==1.26.3
+pandas==2.2.2
+numpy==1.26.4
 
 # Visualization
-plotly==5.18.0
+plotly==5.22.0
 
 # File Handling
-pyarrow==14.0.2  # Required for reading parquet files
+pyarrow==16.1.0  # Required for reading parquet files
 
 # Optional but recommended for better performance
-fastparquet==2023.10.1  # Alternative parquet engine
-
-# Python version compatibility
-# Requires Python 3.8 or higher 
-
-
+fastparquet==2024.5.0  # Alternative parquet engine
