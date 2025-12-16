@@ -15,4 +15,5 @@ plotly==5.22.0
 pyarrow==16.1.0  # Required for reading parquet files
 
 # Optional but recommended for better performance
-fastparquet==2024.5.0  # Alternative parquet engine
+#fastparquet==2024.5.0  # Alternative parquet engine
+
