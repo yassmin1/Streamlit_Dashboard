@@ -10,7 +10,6 @@ python-dateutil==2.9.0.post0
 pytz==2024.1
 scipy==1.11.4
 requests==2.31.0
-
 # fastparquet often breaks on Windows servers due to build tools.
-# Keep it for non-Windows only:
-fastparquet==2024.2.0; platform_system != "Windows"
+fastparquet==2024.2.0 
+
