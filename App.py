@@ -138,8 +138,8 @@ def create_bar_chart(
             y=x_col,
             orientation="h",
             title=title,
-            color=y_col,
-            color_continuous_scale="viridis"
+            #color=y_col,
+            #color_continuous_scale="viridis"
         )
     else:
         fig = px.bar(
@@ -147,8 +147,8 @@ def create_bar_chart(
             x=x_col,
             y=y_col,
             title=title,
-            color=y_col,
-            color_continuous_scale="viridis"
+            #color=y_col,
+            #color_continuous_scale="viridis"
         )
     
     # Apply consistent styling
