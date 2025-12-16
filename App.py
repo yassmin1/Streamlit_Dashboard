@@ -167,11 +167,11 @@ def main():
     with left:
         counts = value_counts_alpha(df, col)
         fig = bar_chart(counts, col, "Count", orientation)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig,width="stretch")
 
     with right:
         st.subheader("Counts")
-        st.dataframe(counts, use_container_width=True)
+        st.dataframe(counts, width="stretch")
 
     # Cross analysis
     st.divider()
@@ -187,9 +187,9 @@ def main():
         ct = crosstab(df, a, b)
         h1, h2 = st.columns(2)
         with h1:
-            st.plotly_chart(heatmap(ct, a, b), use_container_width=True)
+            st.plotly_chart(heatmap(ct, a, b), width="stretch")
         with h2:
-            st.dataframe(ct, use_container_width=True)
+            st.dataframe(ct, width="stretch")
 
 # ============================================
 # ENTRY
