@@ -1,15 +1,20 @@
-streamlit==1.32.2
+# Core Streamlit Application
+streamlit==1.31.0
+
+# Data Processing
 pandas==2.1.4
-plotly==5.20.0
-numpy==1.26.4
-pyarrow==15.0.2
-openpyxl==3.1.2
-xlrd==2.0.1
-duckdb==0.10.1
-python-dateutil==2.9.0.post0
-pytz==2024.1
-scipy==1.11.4
-requests==2.31.0
-# fastparquet often breaks on Windows servers due to build tools.
-fastparquet==2024.2.0 
+numpy==1.26.3
+
+# Visualization
+plotly==5.18.0
+
+# File Handling
+pyarrow==14.0.2  # Required for reading parquet files
+
+# Optional but recommended for better performance
+fastparquet==2023.10.1  # Alternative parquet engine
+
+# Python version compatibility
+# Requires Python 3.8 or higher 
+
 
