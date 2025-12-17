@@ -245,14 +245,15 @@ def create_heatmap(crosstab, row_label, col_label):
 # =============================================================================
 
 def display_header():
-    """Display header with logo"""
-    col1, col2 = st.columns([1, 4])
+    """Display header with logo and responsive sizing"""
+    col1, col2 = st.columns([1, 5])
     
     with col1:
         logo_path = Path(ASSETS_PATH) / "analysis.png"
         if logo_path.exists():
             try:
-                st.image(str(logo_path), width=180)
+                # Use container width for responsive sizing
+                st.image(str(logo_path), use_column_width=True)
             except:
                 st.info("📊")
         else:
@@ -261,8 +262,8 @@ def display_header():
     with col2:
         st.markdown(
             f"""
-            <h1 style='color:{COLORS['primary']}; font-size:70px; 
-                       text-align:center; margin-top:-50px'>
+            <h1 style='color:{COLORS['primary']}; font-size:clamp(40px, 5vw, 70px); 
+                       text-align:center; margin-top:-20px; line-height:1.2;'>
                 Student Insights
             </h1>
             """,
@@ -270,8 +271,8 @@ def display_header():
         )
         st.markdown(
             f"""
-            <div style='color:{COLORS['primary']}; font-size:28px; 
-                        text-align:center; line-height:1.2; margin-top:-10px'>
+            <div style='color:{COLORS['primary']}; font-size:clamp(16px, 2vw, 28px); 
+                        text-align:center; line-height:1.3; margin-top:-5px; padding:0 10px;'>
                 <strong>
                     An interactive dashboard to explore student enrollment, 
                     demographics, and program trends.
@@ -402,16 +403,23 @@ def main():
         
         st.markdown("---")
         
-        sort_by = st.radio(
-            "Sort Categories By",
-            ["Name", "Count"],
-            index=0,
-            help="Sort by category name or frequency"
-        )
+        # Sort and Orientation on same line
+        col_sort, col_orient = st.columns(2)
         
-        st.markdown("---")
+        with col_sort:
+            sort_by = st.radio(
+                "Sort By",
+                ["Name", "Count"],
+                index=0,
+                help="Sort by category name or frequency"
+            )
         
-        orientation = st.radio("Chart Orientation", ["vertical", "horizontal"])
+        with col_orient:
+            orientation = st.radio(
+                "Orientation",
+                ["vertical", "horizontal"],
+                help="Chart layout direction"
+            )
         
         st.markdown("---")
         
