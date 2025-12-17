@@ -167,7 +167,7 @@ def apply_custom_css():
             color: {COLORS['secondary']} !important;
         }}
         
-        /* Make all text in main content area dark blue for consistency */
+        /* Make all text in main content area dark blue for consistency 
         .main * {{
             color: {COLORS['primary']} !important;
         }}
@@ -182,6 +182,7 @@ def apply_custom_css():
             color: #262730 !important;
         }}
         </style>
+        */
         """,
         unsafe_allow_html=True
     )
