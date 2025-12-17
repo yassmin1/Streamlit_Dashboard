@@ -72,18 +72,26 @@ def load_data(file_path: str, columns: List[str] = ANALYSIS_COLUMNS) -> Optional
 
 
 @st.cache_data
-def get_value_counts(df: pd.DataFrame, column: str) -> pd.Series:
+def get_value_counts(df: pd.DataFrame, column: str, sort_by: str = "Name") -> pd.Series:
     """
-    Calculate value counts for a column with caching.
+    Calculate value counts for a column with caching and sorting options.
     
     Args:
         df: Source DataFrame
         column: Column name to analyze
+        sort_by: Sort method - "Name" for alphabetical, "Count" for frequency
         
     Returns:
-        Series with value counts sorted by index
+        Series with value counts sorted according to sort_by parameter
     """
-    return df[column].value_counts().sort_index()
+    value_counts = df[column].value_counts()
+    
+    if sort_by == "Name":
+        # Sort by index (category names) alphabetically
+        return value_counts.sort_index()
+    else:
+        # Sort by values (counts) in descending order
+        return value_counts.sort_values(ascending=False)
 
 
 @st.cache_data
@@ -138,8 +146,8 @@ def create_bar_chart(
             y=x_col,
             orientation="h",
             title=title,
-            #color=y_col,
-            #color_continuous_scale="viridis"
+            color=y_col,
+            color_continuous_scale="viridis"
         )
     else:
         fig = px.bar(
@@ -147,8 +155,8 @@ def create_bar_chart(
             x=x_col,
             y=y_col,
             title=title,
-            #color=y_col,
-            #color_continuous_scale="viridis"
+            color=y_col,
+            color_continuous_scale="viridis"
         )
     
     # Apply consistent styling
@@ -456,6 +464,16 @@ def main():
         
         st.markdown("---")
         
+        # Sort option
+        sort_by = st.radio(
+            "Sort Categories By",
+            ["Name", "Count"],
+            index=0,
+            help="Sort by category name (alphabetical) or by count (frequency)"
+        )
+        
+        st.markdown("---")
+        
         # Chart orientation
         orientation = st.radio("Chart Orientation", ["vertical", "horizontal"])
         
@@ -519,8 +537,8 @@ def main():
     col1, col2 = st.columns([2, 1])
     
     with col1:
-        # Get value counts
-        value_counts = get_value_counts(display_data, selected_column)
+        # Get value counts with selected sort option
+        value_counts = get_value_counts(display_data, selected_column, sort_by)
         
         # Limit categories
         if len(value_counts) > MAX_CATEGORIES_DISPLAY:
@@ -537,12 +555,12 @@ def main():
         if show_percentages:
             chart_data['Percentage'] = (chart_data['Count'] / chart_data['Count'].sum()) * 100
             y_col = 'Percentage'
-            title = f"Distribution of {selected_column} (%)"
+            chart_title = f"Distribution of {selected_column} (%)"
             hover_template = '<b>%{x}</b><br>Count: %{customdata}<br>Percentage: %{y:.1f}%<extra></extra>'
             customdata = chart_data['Count']
         else:
             y_col = 'Count'
-            title = ""
+            chart_title = f"{selected_column} Distribution"
             hover_template = '<b>%{x}</b><br>Count: %{y}<extra></extra>'
             customdata = None
         
@@ -552,7 +570,7 @@ def main():
             selected_column,
             y_col,
             orientation,
-            title,
+            chart_title,
             hover_template,
             customdata
         )
