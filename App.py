@@ -568,7 +568,7 @@ def display_summary_stats(df, column, value_counts):
     freq_table = freq_data.set_index(column).T
     
     # Display the transposed table
-    st.dataframe(freq_table, use_container_width=True)
+    st.dataframe(freq_table,width='stretch')
 
 
 # =============================================================================
@@ -804,7 +804,7 @@ def main():
             )
         
         # Display the chart - use_container_width makes it responsive
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
     
     with col2:
         # Display summary statistics in the sidebar
@@ -912,11 +912,11 @@ def main():
         )
         
         # Display the stacked bar chart
-        st.plotly_chart(fig_bar, use_container_width=True)
+        st.plotly_chart(fig_bar, width='stretch')
         
         # Create and display heatmap
         fig_heatmap = create_heatmap(crosstab, category_1, category_2)
-        st.plotly_chart(fig_heatmap, use_container_width=True)
+        st.plotly_chart(fig_heatmap, width='stretch')
     
     with col4:
         # Display the raw cross-tabulation data
@@ -926,10 +926,10 @@ def main():
         if crosstab.size > 100:  # If more than 100 cells
             st.info("Showing preview")
             # Display only top-left 5x5 portion
-            st.dataframe(crosstab.iloc[:5, :5], use_container_width=True)
+            st.dataframe(crosstab.iloc[:5, :5], width='stretch')
         else:
             # Display full table if reasonably sized
-            st.dataframe(crosstab, use_container_width=True)
+            st.dataframe(crosstab, width='stretch')
         
         # Display summary statistics about the cross-tabulation
         st.subheader("Summary")
