@@ -399,7 +399,7 @@ def display_header():
                 # use_column_width=True makes logo scale responsively
                 # It will shrink on small screens and grow on large screens
                 # This prevents the logo from covering text
-                st.image(str(logo_path), width=True)
+                st.image(str(logo_path), use_column_width=True)
             except:
                 # If image loading fails, show a simple icon instead
                 st.info("Data Analytics")
